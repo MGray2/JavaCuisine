@@ -4,6 +4,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class RestaurantConfig {
 
@@ -18,7 +20,7 @@ public class RestaurantConfig {
                     "1803 Jackson Ave W, Oxford, MS 38655",
                     "+16622366600"
             );
-            repository.save(mickyDees);
+            repository.saveAll(List.of(mickyDees));
         };
     }
 

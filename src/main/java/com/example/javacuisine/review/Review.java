@@ -3,10 +3,16 @@ package com.example.javacuisine.review;
 import com.example.javacuisine.restaurant.Restaurant;
 import com.example.javacuisine.user.User;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -21,6 +21,7 @@ public class Restaurant {
     private String name;
     private Double latitude;
     private Double longitude;
+    @Transient
     private Long overallRating;
     private String address;
     private String contact;
@@ -35,6 +36,19 @@ public class Restaurant {
         this.overallRating = overallRating;
         this.address = address;
         this.contact = contact;
+    }
+
+    public Long calculateOverallRating() {
+        if (reviews == null || reviews.isEmpty()) {
+            return 0L; // Return 0 if there are no reviews
+        }
+
+        long totalRating = 0;
+        for (Review review : reviews) {
+            totalRating += review.getRating();
+        }
+
+        return totalRating / reviews.size();
     }
 
 }
