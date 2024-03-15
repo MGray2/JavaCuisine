@@ -2,10 +2,7 @@ package com.example.javacuisine.restaurant;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,5 +27,28 @@ public class RestaurantController {
     public Optional<Restaurant> getRestaurantById(@PathVariable("restaurantId") Long id) {
         return restaurantService.getRestaurantById(id);
     }
+
+    @PostMapping
+    public void createNewRestaurant(@RequestBody Restaurant restaurant) {
+        restaurantService.addNewRestaurant(restaurant);
+    }
+
+    @DeleteMapping(path = "{restaurantId}")
+    public void removeRestaurant(@PathVariable("restaurantId") Long id) {
+        restaurantService.removeRestaurant(id);
+    }
+
+    @PutMapping(path = "{restaurantId}")
+    public void updateRestaurant(@PathVariable("restaurantId") Long id,
+                                 @RequestParam(required = false) String name,
+    @RequestParam(required = false) double latitude,
+    @RequestParam(required = false) double longitude,
+    @RequestParam(required = false) String address,
+    @RequestParam(required = false) String contact) {
+        restaurantService.updateRestaurant(id, name, latitude, longitude, address, contact);
+    }
+
+
+
 
 }

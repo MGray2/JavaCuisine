@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,7 +28,7 @@ public class Restaurant {
     private String contact;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 
     public Restaurant(String name, Double latitude, Double longitude, Long overallRating, String address, String contact) {
         this.name = name;
@@ -38,12 +39,12 @@ public class Restaurant {
         this.contact = contact;
     }
 
-    public Long calculateOverallRating() {
-        if (reviews == null || reviews.isEmpty()) {
-            return 0L; // Return 0 if there are no reviews
+    public double calculateOverallRating() {
+        if (reviews.isEmpty()) {
+            return 0; // Return 0 if there are no reviews
         }
 
-        long totalRating = 0;
+        double totalRating = 0;
         for (Review review : reviews) {
             totalRating += review.getRating();
         }
