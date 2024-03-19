@@ -9,13 +9,12 @@ import java.util.List;
 @Configuration
 public class UserConfig {
     @Bean
-    CommandLineRunner commandLineRunner(UserRepository repository) {
+    CommandLineRunner commandLineRunner3(UserRepository repository) {
         return args -> {
-            User freddyfazbear new User(
-                    "Freddy Fazbear",
-                    "biteof1987"
+            User freddyFazbear = new User(
+
             );
-            repository.saveAll(List.of(freddyfazbear));
+            repository.saveAll(List.of(freddyFazbear));
 
         };
     }
