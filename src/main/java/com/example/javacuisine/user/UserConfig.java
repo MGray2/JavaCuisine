@@ -8,8 +8,8 @@ import java.util.List;
 
 @Configuration
 public class UserConfig {
-    @Bean
-    CommandLineRunner commandLineRunner(UserRepository repository) {
+    @Bean("user")
+    CommandLineRunner commandLineRunner3(UserRepository repository) {
         return args -> {
             User freddyfazbear = new User(
                     "Freddy Fazbear",

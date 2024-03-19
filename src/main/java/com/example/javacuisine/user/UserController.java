@@ -2,24 +2,27 @@ package com.example.javacuisine.user;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RequestMapping
+@RequestMapping(path = "api/v1/user")
 @RestController
 public class UserController {
     private final UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
-    public UserController(UserServcie userServcie) {this.user = userService; }
+    public UserController(UserService userService) {
+        this.userService = userService;}
 
     @GetMapping
-    public List<UserService> getUserService() {return userService.getUser(); }
+    public List<User> getUserService() {return userService.getUsers(); }
 
-    @GetMapping
-    public Optional<User>getUserById(@PathVariable("userId") Long id) {
+    @GetMapping(path = "{userId}")
+    public Optional<User> getUserById(@PathVariable("userId") Long id) {
         return userService.getUserById(id);
     }
     @PostMapping
@@ -27,7 +30,7 @@ public class UserController {
         userService.addNewUser(user);
     }
     @DeleteMapping
-    public void  removeUser(@PathVariable("userId") Long id) {userService.removeUser(id); }
+    public void  removeUser(@PathVariable("userId") Long id) {userService.deleteUser(id); }
 
     @PutMapping
     public void updateUser(@PathVariable("userId") Long id,
@@ -35,4 +38,5 @@ public class UserController {
                                @RequestParam(required = false) String password) {
         userService.updateUser(id, username, password);
     }
+
 }

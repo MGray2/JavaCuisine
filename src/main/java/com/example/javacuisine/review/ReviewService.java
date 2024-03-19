@@ -73,11 +73,25 @@ public class ReviewService {
         }
     }
     @Transactional
-    public void createReview(Review review, Long userId, Long restaurantId, String comment) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
-        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(() -> new EntityNotFoundException("Restaurant not found with id: " + restaurantId));
+    public void createReview(Long userId, Long restaurantId, String comment, Integer rating) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
-        review = new Review(user, restaurant, comment, rating);
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new EntityNotFoundException("Restaurant not found with id: " + restaurantId));
+
+        // Ensure that the restaurant is saved/persisted before proceeding
+        if (restaurant.getRestaurant_id() == null) {
+            restaurant = restaurantRepository.save(restaurant);
+        }
+
+        Review review = new Review();
+        review.setUser(user);
+        review.setRestaurant(restaurant);
+        review.setComment(comment);
+        review.setRating(rating);
         reviewRepository.save(review);
     }
+
+
 }

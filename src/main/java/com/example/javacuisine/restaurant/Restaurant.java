@@ -17,7 +17,7 @@ import java.util.List;
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long restaurant_id;
 
     private String name;
     private Double latitude;

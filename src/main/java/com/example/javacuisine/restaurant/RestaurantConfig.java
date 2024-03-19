@@ -9,7 +9,7 @@ import java.util.List;
 @Configuration
 public class RestaurantConfig {
 
-    @Bean
+    @Bean("restaurant")
     CommandLineRunner commandLineRunner(RestaurantRepository repository) {
         return args -> {
             Restaurant mickyDees = new Restaurant(
