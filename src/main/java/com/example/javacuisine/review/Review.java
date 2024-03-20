@@ -2,6 +2,7 @@ package com.example.javacuisine.review;
 
 import com.example.javacuisine.restaurant.Restaurant;
 import com.example.javacuisine.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class Review {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "restaurant_id")
+    @JsonIgnoreProperties("reviews")
     private Restaurant restaurant;
 
     private String comment;

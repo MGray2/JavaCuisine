@@ -65,6 +65,7 @@ public class ReviewService {
 
         if (newRating != null && !Objects.equals(newRating, review.getRating())) {
             review.setRating(newRating);
+            review.getRestaurant().calculateOverallRating();
         }
 
         if (newDateCreated != null && !Objects.equals(newDateCreated, review.getDateCreated())) {
@@ -91,6 +92,9 @@ public class ReviewService {
         review.setComment(comment);
         review.setRating(rating);
         reviewRepository.save(review);
+
+        restaurant.addToReviews(review);
+        restaurant.calculateOverallRating();
     }
 
 

@@ -29,8 +29,8 @@ public class ReviewController {
     }
 
     @PostMapping
-    public void createNewReview(@RequestBody Long userId, Long restaurantId, String comment, Integer rating){
-        reviewService.createReview(userId, restaurantId, comment, rating);
+    public void createNewReview(@RequestBody Review review){
+        reviewService.createReview(review.getId(), review.getRestaurant().getRestaurant_id(), review.getComment(), review.getRating());
     }
 
     @DeleteMapping(path = "{reviewId}")
