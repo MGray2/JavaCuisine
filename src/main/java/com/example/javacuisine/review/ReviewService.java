@@ -22,11 +22,9 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Autowired
     public ReviewService(ReviewRepository reviewRepository, UserRepository userRepository, RestaurantRepository restaurantRepository) {
@@ -78,13 +76,11 @@ public class ReviewService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
+        // Find the restaurant by ID
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant not found with id: " + restaurantId));
 
-        // Ensure that the restaurant is saved/persisted before proceeding
-        if (restaurant.getRestaurant_id() == null) {
-            restaurant = restaurantRepository.save(restaurant);
-        }
+
 
         Review review = new Review();
         review.setUser(user);
