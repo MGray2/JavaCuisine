@@ -14,6 +14,9 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @Autowired
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
     public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
@@ -46,6 +49,12 @@ public class RestaurantController {
     @RequestParam(required = false) String address,
     @RequestParam(required = false) String contact) {
         restaurantService.updateRestaurant(id, name, latitude, longitude, address, contact);
+    }
+
+    @GetMapping("/search")
+    public List<Restaurant> searchRestaurants(@RequestParam("query") String query) {
+        List<Restaurant> restaurants = restaurantRepository.findByNameContainingIgnoreCase(query);
+        return restaurants;
     }
 
 

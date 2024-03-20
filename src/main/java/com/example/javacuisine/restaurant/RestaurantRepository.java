@@ -3,7 +3,9 @@ package com.example.javacuisine.restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface RestaurantRepository extends JpaRepository<Restaurant, Long>{
+import java.util.List;
 
+@Repository
+public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
+    List<Restaurant> findByNameContainingIgnoreCase(String name);
 }
