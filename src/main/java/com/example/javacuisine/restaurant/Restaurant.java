@@ -53,7 +53,7 @@ public class Restaurant {
                 totalRating += review.getRating();
             }
             double overallRating = totalRating / reviews.size();
-            this.setOverallRating(overallRating);
+            this.setOverallRating(overallRating); // Update the overall rating of the restaurant
         }
     }
 
