@@ -46,6 +46,9 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
+    public List<Review> getReviewByRestaurantId(Long id){
+       return (List<Review>) reviewRepository.findReviewByRestaurant(id);
+    }
 
     public void removeReview(Long id){
         if (!reviewRepository.existsById(id)){
@@ -92,6 +95,8 @@ public class ReviewService {
         restaurant.addToReviews(review);
         restaurant.calculateOverallRating();
     }
+
+
 
 
 }

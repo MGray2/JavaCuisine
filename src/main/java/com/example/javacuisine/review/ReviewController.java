@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.sampled.ReverbType;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,11 @@ public class ReviewController {
     @GetMapping(path = "{reviewId}")
     public Optional<Review> getReviewById(@PathVariable("reviewId") Long id){
         return reviewService.getReviewById(id);
+    }
+
+    @GetMapping(path = "{restaurantId}")
+    public List<Review> getReviewByRestaurant(@PathVariable("restaurantId") Long id){
+        return reviewService.getReviewByRestaurantId(id);
     }
 
     @PostMapping
