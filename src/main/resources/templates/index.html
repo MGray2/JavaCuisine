@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Search</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #searchInput {
+            width: 300px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #searchButton {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #restaurantList {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .restaurant-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .restaurant-info {
+            text-align: center;
+        }
+
+        .restaurant-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .restaurant-address {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .button-container {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .reviews-list {
+            margin-top: 10px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .review-item {
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Restaurant Search</h1>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search for restaurants...">
+    <button id="searchButton">Search</button>
+</div>
+
+<ul id="restaurantList"></ul>
+
+<script>
+    function searchRestaurants() {
+        var searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:8080/api/v1/restaurant/search?query=' + searchInput, true);
+        xhr.onload = function () {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                var data = JSON.parse(xhr.responseText);
+                displayRestaurants(data);
+            } else {
+                console.error('Error fetching data');
+            }
+        };
+        xhr.onerror = function () {
+            console.error('Request failed');
+        };
+        xhr.send();
+    }
+
+    function displayRestaurants(restaurants) {
+        var restaurantList = document.getElementById('restaurantList');
+        restaurantList.innerHTML = '';
+        restaurants.forEach(function (restaurant) {
+            var listItem = document.createElement('li');
+            var card = document.createElement('div');
+            card.classList.add('restaurant-card');
+
+            var nameElement = document.createElement('div');
+            nameElement.classList.add('restaurant-info');
+            nameElement.classList.add('restaurant-name');
+            nameElement.textContent = restaurant.name;
+            card.appendChild(nameElement);
+
+            var addressElement = document.createElement('div');
+            addressElement.classList.add('restaurant-info');
+            addressElement.classList.add('restaurant-address');
+            addressElement.textContent = restaurant.address;
+            card.appendChild(addressElement);
+
+            var buttonContainer = document.createElement('div');
+            buttonContainer.classList.add('button-container');
+
+            var reviewsButton = document.createElement('button');
+            reviewsButton.classList.add('button');
+            reviewsButton.textContent = 'Reviews';
+            buttonContainer.appendChild(reviewsButton);
+
+            var directionsButton = document.createElement('button');
+            directionsButton.classList.add('button');
+            directionsButton.textContent = 'Directions';
+            directionsButton.addEventListener('click', function() {
+                showDirections(restaurant.latitude, restaurant.longitude);
+            });
+            buttonContainer.appendChild(directionsButton);
+
+            card.appendChild(buttonContainer);
+
+            listItem.appendChild(card);
+            restaurantList.appendChild(listItem);
+        });
+    }
+
+    function showDirections(latitude, longitude) {
+        var apiKey = 'AIzaSyC__fQaxuypkb3zh7jc-4UL1No8oiWu_Pk';
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var origin = position.coords.latitude + ',' + position.coords.longitude;
+            var destination = latitude + ',' + longitude;
+            window.open('https://www.google.com/maps/dir/?api=1&origin=' + origin + '&destination=' + destination + '&travelmode=driving');
+        });
+    }
+
+    function handleSearch() {
+        searchRestaurants();
+    }
+
+    function fetchReviews(restaurantId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:8080/api/v1/restaurant/' + restaurantId + '/reviews', true);
+        xhr.onload = function () {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                var reviewsData = JSON.parse(xhr.responseText);
+                showReviews(reviewsData.reviews);
+            } else {
+                console.error('Error fetching reviews');
+            }
+        };
+        xhr.onerror = function () {
+            console.error('Request failed');
+        };
+        xhr.send();
+    }
+
+
+    function showReviews(reviews) {
+        var reviewsContainer = document.createElement('div');
+        reviewsContainer.classList.add('reviews-list');
+
+        reviews.forEach(function(review) {
+            var reviewItem = document.createElement('div');
+            reviewItem.textContent = review.text + ' - ' + review.user.name;
+            reviewItem.classList.add('review-item');
+            reviewsContainer.appendChild(reviewItem);
+        });
+
+        var restaurantList = document.getElementById('restaurantList');
+        restaurantList.appendChild(reviewsContainer);
+    }
+
+    document.getElementById('searchButton').addEventListener('click', handleSearch);
+</script>
+</body>
+</html>

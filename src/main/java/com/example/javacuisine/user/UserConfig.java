@@ -15,16 +15,7 @@ public class UserConfig {
                     "Freddy Fazbear",
                     "biteof1987"
             );
-            User joe = new User(
-                    "Joe is hungry",
-                    "sneakadootlebite"
-            );
-            User steve = new User(
-                    "Steve",
-                    "Minecraft"
-            );
-
-            repository.saveAll(List.of(freddyfazbear, joe, steve));
+            repository.saveAll(List.of(freddyfazbear));
 
         };
     }
